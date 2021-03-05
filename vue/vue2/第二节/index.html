@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <!-- 被控制的区域 专业名称：模板 -->
+    <div id="app"> <!-- 这个区域内的任何都会被控制，即包括id为jerry的区域也会被控制 -->
+        <!-- <div id="jerry"></div> -->
+        {{ msg }} <!-- 插值表达式 -->
+        {{ 5201314 }}
+        {{ '婀娜多姿，亭亭玉立' }}
+        {{ true }}
+        {{ ['等', '不得'] }}
+        {{ {'name': 'jerry', 'age': 18} }}
+        {{ 2+3 }} <!-- 运算表达式 -->
+        {{ !0 }} <!-- 逻辑表达式 -->
+        {{ 1>2?0:3 }} <!-- 三元表达式 -->
+        {{ mrDeng.father }}  <!-- 不会报错，但是值为undefined -->
+    </div>
+    
+    <div id="yc"></div> 
+
+    <script>
+        // 最初的写法
+        // const oDiv = document.getElementById('app');
+        // const data = '插入被控制区域的文字';
+        // oDiv.innerText = data;
+        // 第一种选择被控制的区域
+        const vm = new Vue({
+            el: '#app', // el: 即element，值是一个css选择器  这样表示选择到了id值为app的div这个元素  也表示可以控制id为app的区域
+            data: {
+                msg: '在控制区域存放数据信息',
+                mrDeng: {
+                    wife: '小刘',
+                    son: '王大'
+                }
+            }
+        });
+        // 使用Vue构造函数自带的$mount也可以实现，与el的作用一样
+        // vm.$mount('#app'); // 与el的区别不大，但是$mount可以用于延迟挂载
+        // 插值表达式 可以写数字、字符串、boolean、array、object、表达式、已经声明的数据，否则会报错、undefined、null
+    </script>
+</body>
+</html>
