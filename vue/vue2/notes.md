@@ -80,6 +80,25 @@ if(typeof Promise !== 'undefined') {
 ```
 - Promise.resolve().then() 微
 - MutationObserver 突变观察 假节点 改动 微
-- setImmediate 宏任务 IE下
+- setImmediate 宏任务 0IE下
 - setTimeout 宏任务
+
+- 曾今vue用过的宏任务
+    - MessageChannel 消息通道 宏任务
 # Vue的响应式-2
+1. 数组
+    > 通过索引的方式更改数组
+    > 更改长度
+2. 对象
+    > 增删对象
+使用上面的方法修改数据，是不会重新渲染页面，只有用下面的才会重新渲染
+
+- 数组
+    1、变异方法：push、pop、shift、unshift、splice、sort、reverse
+    2、vm.$set(要改谁, 改什么, 改成什么) 或者 Vue.set(要改谁, 改什么, 改成什么)
+    3、vm.$delete(要删谁，删什么) 或者 Vue.delete(要删谁，删什么)
+- 对象
+    1、vm.$set(要改谁, 改什么, 改成什么) 或者 Vue.set(要改谁, 改什么, 改成什么)
+    2、vm.$delete(要删谁，删什么) 或者 Vue.delete(要删谁，删什么)
+
+- 数据劫持: Object.defineProperty

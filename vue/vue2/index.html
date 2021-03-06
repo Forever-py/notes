@@ -9,41 +9,21 @@
 </head>
 <body>
     <div id="app">
-        {{ msg }}
+        {{ mrDeng }}
+        {{ dengFamily }}
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '漂亮',
-                msDeng: {
-                    name: '邓旭明',
-                    age: 30
+                dengFamily: ['邓', '小王', '小刘'],
+                arr: [1, 2, 3],
+                mrDeng: {
+                    name: '邓啊',
+                    age: 30,
+                    son: '小王'
                 }
             }
-        });
-        vm.msg = '好看';
-        console.log(vm.msg, vm.$el.innerText); // vm.$el.innerText = document.getElementById('app').innerText;
-        vm.msg = '好美';
-        console.log(vm.msg, vm.$el.innerText);
-        vm.msg = '真漂亮';
-        console.log(vm.msg, vm.$el.innerText);
-        // setTimeout(() => {
-        //     console.log(vm.msg, vm.$el.innerText);
-        // }, 0)
-
-        vm.$nextTick(function () {
-            console.log(this, vm.msg, vm.$el.innerText);
-        }) 
-        Vue.nextTick(function () {
-            console.log(this, vm.msg, vm.$el.innerText);
-        })
-        // 还都可以当作一个promise使用
-        vm.$nextTick().then(() => {
-            console.log(vm.msg, vm.$el.innerText);
-        })
-        Vue.nextTick().then(() => {
-            console.log(vm.msg, vm.$el.innerText);
         })
     </script>
 </body>
