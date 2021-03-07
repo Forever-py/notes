@@ -146,3 +146,23 @@ textContent VS innerText
 重排重绘会对性能产生影响
 ## v-html
 - 更新元素的innerHTML
+- 危险 会引起XSS攻击
+- 在可信内容上使用v-html，永远不用再用户提交的内容上
+# 7.条件渲染
+- 根据某一个条件，判断是否要展示某一个元素
+## v-if
+## v-else-if
+- 表示v-if的"v-else-if块"
+- 使用这个语句，它的前一条语句必须要有v-if或者v-else-if语句才可以，否则会失效
+## v-else
+- 表示v-if或者v-else-if的"v-else块"
+- 使用这个语句，它的前一条语句必须要有v-if或者v-else-if语句才可以，否则会失效
+
+## v-show
+- 更具表达式的真假值，切换元素的display CSS属性
+
+v-if VS v-show
+1. v-if是惰性的，如果在初始渲染时条件为假，则什么也不做，直到条件第一次变为真时，才会开始渲染条件块。v-show则不管初始条件是什么，元素总是会被渲染，并且只是简单地基于CSS进行切换
+2. v-if有更高的切换开销，v-show有更高的初始渲染开销，如果需要非常频繁地切换，则使用v-show较好，如果在运行时条件很少改变，则使用v-if较好
+3. v-show不支持<template>元素
+4. v-show不支持v-else/v-else-if

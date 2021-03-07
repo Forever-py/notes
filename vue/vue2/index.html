@@ -25,13 +25,36 @@
         <div v-text="msg1">{{ msg }}</div>
     </div> -->
     
-    <div id="app">
+    <!-- <div id="app">
         <div v-html="html"></div>
+    </div> -->
+
+    <div id="app">
+        <!-- <div v-if="type === 'A'">是Jerry吗？</div>
+        <div v-else-if="type === 'B'">不是Jerry</div>
+        <div v-else>是他，没得错</div> -->
+
+        <!-- <div v-if="show">真好看</div>
+        <div v-if="show">真好看</div>
+        <div v-if="show">真好看</div>
+        <div v-if="show">真好看</div> 等价于下面的写法 -->
+        <!-- <template v-if="show">
+            <div>真好看</div>
+            <div>真好看</div>
+            <div>真好看</div>
+            <div>真好看</div>
+        </template> -->
+
+        <div v-show="show">真漂亮</div>
+        <div v-if="show">真不漂亮</div>
     </div>
+
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
+                show: '',
+                type: 'D',
                 msg: '我真好看',
                 msg1: '眼睛小',
                 html: '<span>白无常</span>'
