@@ -5,28 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="./observer.js"></script>
-    <!-- <script src="./vue.js"></script> -->
+    <script src="./vue.js"></script>
 </head>
 <body>
+    <!-- <div id="app" v-pre>
+        {{ msg }}
+    </div> -->
+
+    <!-- <div id="app" v-cloak>
+        {{ msg }}
+    </div> -->
+
     <!-- <div id="app">
-        {{ mrDeng }}
-        {{ dengFamily }}
+        <div v-once>{{ msg }}</div>
+        <div>{{ msg }}</div>
+    </div> -->
+    
+    <!-- <div id="app">
+        <div v-text="msg1">{{ msg }}</div>
+    </div> -->
+    
+    <div id="app">
+        <div v-html="html"></div>
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                dengFamily: ['邓', '小王', '小刘'],
-                arr: [1, 2, 3],
-                mrDeng: {
-                    name: '邓啊',
-                    age: 30,
-                    son: '小王'
-                }
+                msg: '我真好看',
+                msg1: '眼睛小',
+                html: '<span>白无常</span>'
             }
         })
-    </script> -->
-
+    </script>
 </body>
 </html>

@@ -109,3 +109,40 @@ if(typeof Promise !== 'undefined') {
 - 渲染
 
 - 劣势：需要递归观察、监听不到对象的增/删
+> 利用Object.defineProperty()实现响应式的劣势
+    1. 天生就需要进行递归
+    2. 监听不到数组不存在的索引的改变
+    3. 监听不到数组长度的改变
+    4. 监听不到对象的增删
+
+# 6.Vue相关指令
+- 具有特殊含义、拥有特殊功能的 特性
+- attribute 属性/特性
+- 前缀： v-
+- 可以直接使用data中的数据
+## v-pre
+- 跳过元素和它的子元素的编译过程  
+- 跳过没有指令的节点，加快编译
+- 用处不多
+## v-cloak
+- 解决闪烁的问题
+- 用处不多
+## v-once
+- 只渲染元素一次，渲染
+## v-text
+- 更新元素的textContent
+- 与插值表达式 {{  }}很像，但是也有区别
+- v-text 替换元素中所有的文本
+- {{  }} 也叫 mustache 语法 胡子 它只替换自己，不清空元素的内容
+- v-text的优先级 高于 {{  }}
+
+textContent VS innerText
+1. dom.textContent = 'xx' 两者都可
+2. textContent会获取所有元素  innerText不会获取所有元素
+3. innerText会受css影响，不获取隐藏元素的文本，textContent与之相反
+4. innerText会触发重排
+5. textContent是标准方法，innerText是IE引入的
+
+重排重绘会对性能产生影响
+## v-html
+- 更新元素的innerHTML
