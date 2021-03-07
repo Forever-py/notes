@@ -166,3 +166,58 @@ v-if VS v-show
 2. v-if有更高的切换开销，v-show有更高的初始渲染开销，如果需要非常频繁地切换，则使用v-show较好，如果在运行时条件很少改变，则使用v-if较好
 3. v-show不支持<template>元素
 4. v-show不支持v-else/v-else-if
+
+# v-bind指令
+- 动态的绑定一个或者多个指令
+- :后的为传递的参数
+- 动态特性名：2.6.10 2.6.0+
+- 缩写： v-bind: -> :
+- v-bind 无参数，且绑定一个对象，键值对为特性
+
+class & style
+## 绑定class
+- 对象语法
+- 数组语法
+- 可以在数组语法中使用对象语法
+## 绑定style
+- 对象语法
+    <div id="app">
+        <div :style="{color: 'red', width: '100px', backgroundColor: 'yellow'}">Jerry</div>
+        <div :style=styleObject>Jerry</div>
+    </div>
+    const vm = new Vue({
+            el: '#app',
+            data: {
+                styleObject: {
+                    color: 'red',
+                    width: '100px',
+                    backgroundColor: 'yellow'
+                }
+            }
+        })
+- 数组语法
+     <div id="app">
+        <div :style="[styleObjectA, styleObjectB]">Jerry</div>
+    </div>
+    const vm = new Vue({
+            el: '#app',
+            data: {
+                styleObjectA: {
+                    color: 'red',
+                    width: '100px',
+                    backgroundColor: 'yellow'
+                },
+                styleObjectB: {
+                    cursor: 'pointer'
+                }
+            }
+        })
+- 自动添加前缀
+- 多重值
+    <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}"></div>
+- 修饰符 (modifier)   v-bind.xxx
+    html特性会将大写字母转化为小写字母
+    - .camel 解决上面表述的问题
+    - .prop 用于绑定dom属性的
+        属性是innerHTML、innerText、textContent、className等等
+    - .sync

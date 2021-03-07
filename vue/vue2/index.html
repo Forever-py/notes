@@ -8,45 +8,28 @@
     <script src="./vue.js"></script>
 </head>
 <body>
-    <!-- <div id="app" v-pre>
-        {{ msg }}
-    </div> -->
-
-    <!-- <div id="app" v-cloak>
-        {{ msg }}
-    </div> -->
-
-    <!-- <div id="app">
-        <div v-once>{{ msg }}</div>
-        <div>{{ msg }}</div>
-    </div> -->
-    
-    <!-- <div id="app">
-        <div v-text="msg1">{{ msg }}</div>
-    </div> -->
-    
-    <!-- <div id="app">
-        <div v-html="html"></div>
-    </div> -->
-
     <div id="app">
-        <!-- <div v-if="type === 'A'">是Jerry吗？</div>
-        <div v-else-if="type === 'B'">不是Jerry</div>
-        <div v-else>是他，没得错</div> -->
+        <!-- <div v-bind:a="type" :b="xx" :c="ss">绑定一个</div>
+        <div v-bind:[attr]="type" b="xx" c="ss"></div>
+        <div v-bind="{name: xx, age: '18', sex: 'xx'}">绑定多个</div> -->
+        
+        <!-- 绑定class -->
+        <!-- <div :class="{red: isRed}">对象语法</div> -->
+        <!-- <div :class="[isRed? red: '', green]">数组语法</div> -->
+        <!-- <div :class="[{redClass: isRed}, green]">可以在数组语法中使用对象语法</div> -->
+        <!-- <div :class="green" class="red">表示两者可以共存</div>  -->
 
-        <!-- <div v-if="show">真好看</div>
-        <div v-if="show">真好看</div>
-        <div v-if="show">真好看</div>
-        <div v-if="show">真好看</div> 等价于下面的写法 -->
-        <!-- <template v-if="show">
-            <div>真好看</div>
-            <div>真好看</div>
-            <div>真好看</div>
-            <div>真好看</div>
-        </template> -->
+        <!-- 绑定style -->
+        <!-- <div :style="{color: 'red', width: '100px', backgroundColor: 'yellow'}">Jerry</div> -->
+        <!-- <div :style=styleObjectA>Jerry</div> -->
+        <!-- <div :style="[styleObjectA, styleObjectB]">Jerry</div> -->
+        <!-- <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}"></div> -->
+        
+        <!-- <svg viewBox="0 0 100 100"></svg> -->
+        <!-- <svg :viewBox="viewBox"></svg> -->
+        <!-- <svg :view-box.camel="viewBox"></svg> -->
+        <!-- <div :text-content.prop="'jerry'"></div> -->
 
-        <div v-show="show">真漂亮</div>
-        <div v-if="show">真不漂亮</div>
     </div>
 
     <script>
@@ -54,10 +37,23 @@
             el: '#app',
             data: {
                 show: '',
+                attr: 'e',
+                xx: 'ss',
+                ss: 'xx',
                 type: 'D',
-                msg: '我真好看',
-                msg1: '眼睛小',
-                html: '<span>白无常</span>'
+                isRed: false,
+                red: 'redClass',
+                green: 'greenClass',
+                styleObjectA: {
+                    color: 'red',
+                    width: '100px',
+                    backgroundColor: 'yellow'
+                },
+                styleObjectB: {
+                    cursor: 'pointer',
+                    transform: 'translateX(90px)'
+                },
+                viewBox: "0 0 100 100"
             }
         })
     </script>
