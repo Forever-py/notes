@@ -101,4 +101,11 @@ if(typeof Promise !== 'undefined') {
     1、vm.$set(要改谁, 改什么, 改成什么) 或者 Vue.set(要改谁, 改什么, 改成什么)
     2、vm.$delete(要删谁，删什么) 或者 Vue.delete(要删谁，删什么)
 
-- 数据劫持: Object.defineProperty
+- 数据劫持: Object.defineProperty()
+
+# 扩展_剖析Vue响应式原理
+- data(Object) Vue 数据
+- 监听(Object.defineProperty(监听谁，监听什么，配置))这个对象的改变
+- 渲染
+
+- 劣势：需要递归观察、监听不到对象的增/删
