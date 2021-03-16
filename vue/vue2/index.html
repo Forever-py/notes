@@ -8,52 +8,53 @@
     <script src="./vue.js"></script>
 </head>
 <body>
+    <!-- 
+        v-on 好处
+        - 轻松定位
+        - 不需要手动绑定事件，viewModel内非常纯粹的逻辑
+        - 会自动删除事件监听/事件处理
+     -->
     <div id="app">
-        <!-- <div v-bind:a="type" :b="xx" :c="ss">绑定一个</div>
-        <div v-bind:[attr]="type" b="xx" c="ss"></div>
-        <div v-bind="{name: xx, age: '18', sex: 'xx'}">绑定多个</div> -->
-        
-        <!-- 绑定class -->
-        <!-- <div :class="{red: isRed}">对象语法</div> -->
-        <!-- <div :class="[isRed? red: '', green]">数组语法</div> -->
-        <!-- <div :class="[{redClass: isRed}, green]">可以在数组语法中使用对象语法</div> -->
-        <!-- <div :class="green" class="red">表示两者可以共存</div>  -->
-
-        <!-- 绑定style -->
-        <!-- <div :style="{color: 'red', width: '100px', backgroundColor: 'yellow'}">Jerry</div> -->
-        <!-- <div :style=styleObjectA>Jerry</div> -->
-        <!-- <div :style="[styleObjectA, styleObjectB]">Jerry</div> -->
-        <!-- <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}"></div> -->
-        
-        <!-- <svg viewBox="0 0 100 100"></svg> -->
-        <!-- <svg :viewBox="viewBox"></svg> -->
-        <!-- <svg :view-box.camel="viewBox"></svg> -->
-        <!-- <div :text-content.prop="'jerry'"></div> -->
-
+        <button v-on:[event]="addCounter(5, $event)">点击</button>
+        <!-- v-on 简称 @ -->
+        <!-- <button @click="addCounter(5, $event)">点击</button> -->
+        <p>按钮被点击了{{ counter }}次</p>
+        <div v-on="{ mousedown: doThis, mouseup: doThat }" style="width: 100px; height: 100px; border: 1px solid #000;"></div>
     </div>
 
     <script>
         const vm = new Vue({
             el: '#app',
+            /*
+             data: {
+                counter: 0,
+            },
+            methods: {
+                addCounter: function (num, e) {
+                    this.counter += num; // this指向当前的Vue实例
+                    this.a();
+                    console.log(e.target); // e是原生DOM事件
+                },
+                a () {
+                    console.log('a');
+                }
+            }
+            */
             data: {
-                show: '',
-                attr: 'e',
-                xx: 'ss',
-                ss: 'xx',
-                type: 'D',
-                isRed: false,
-                red: 'redClass',
-                green: 'greenClass',
-                styleObjectA: {
-                    color: 'red',
-                    width: '100px',
-                    backgroundColor: 'yellow'
+                counter: 0,
+                event: 'click', // 绑定一个动态的事件
+            },
+            methods: {
+                addCounter: function (num, e) {
+                    this.counter += num; // this指向当前的Vue实例
+                    console.log(e.target); // e是原生DOM事件
                 },
-                styleObjectB: {
-                    cursor: 'pointer',
-                    transform: 'translateX(90px)'
+                doThis () {
+                    console.log('鼠标按下');
                 },
-                viewBox: "0 0 100 100"
+                doThat () {
+                    console.log('鼠标抬起');
+                }
             }
         })
     </script>
