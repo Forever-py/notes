@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,56 +8,51 @@
     <title>Document</title>
     <script src="./vue.js"></script>
 </head>
+
 <body>
-    <!-- 
-        v-on 好处
-        - 轻松定位
-        - 不需要手动绑定事件，viewModel内非常纯粹的逻辑
-        - 会自动删除事件监听/事件处理
-     -->
     <div id="app">
-        <button v-on:[event]="addCounter(5, $event)">点击</button>
-        <!-- v-on 简称 @ -->
-        <!-- <button @click="addCounter(5, $event)">点击</button> -->
-        <p>按钮被点击了{{ counter }}次</p>
-        <div v-on="{ mousedown: doThis, mouseup: doThat }" style="width: 100px; height: 100px; border: 1px solid #000;"></div>
+        <!-- .stop阻止事件冒泡，调用event.stop -->
+        <!-- <div @click="alert('div')" style="background-color: #f00;">
+            <button @click.stop="alert('button')">点击</button>
+        </div> -->
+
+        <!-- .prevent 阻止默认事件，调用event.preventDefault() -->
+        <!-- <form v-on:submit.prevent="onSubmit">
+            <input type="submit">
+        </form> -->
+
+
+        <!-- .capture 事件捕获模式 -->
+        <!-- <div @click.capture="alert('div')" style="background-color: #f00;">
+            <button @click="alert('button')">点击</button>
+        </div> -->
+
+        <!-- .self 只当事件是从侦听器绑定的元素本身触发时才会触发回调 -->
+        <!-- <div @click.self="alert('div')" :style="{ backgroundColor: 'red' }">
+            <button @click="alert('button')">点击</button>
+        </div> -->
+
+        <!-- once 只触发一次回调 -->
+        <!-- <button @click.once="alert('button')">点击</button> -->
+    
+        <!-- .passive 实际上是设置的addEventLister中的passive选项，能够提升移动端的性能 -->
+        
+        <!-- 按键修饰符 -->
+        <!-- <input type="text" @keyup.enter="onSubmit"> -->
+        <!-- <input type="text" @keyup.caps-lock="onSubmit"> -->
+        <!-- <input type="text" @keyup.13="onSubmit"> 13是按键码enter -->
+        <!-- <input v-on:keyup.enter="submit"> -->
     </div>
 
     <script>
         const vm = new Vue({
             el: '#app',
-            /*
-             data: {
-                counter: 0,
-            },
             methods: {
-                addCounter: function (num, e) {
-                    this.counter += num; // this指向当前的Vue实例
-                    this.a();
-                    console.log(e.target); // e是原生DOM事件
-                },
-                a () {
-                    console.log('a');
-                }
-            }
-            */
-            data: {
-                counter: 0,
-                event: 'click', // 绑定一个动态的事件
-            },
-            methods: {
-                addCounter: function (num, e) {
-                    this.counter += num; // this指向当前的Vue实例
-                    console.log(e.target); // e是原生DOM事件
-                },
-                doThis () {
-                    console.log('鼠标按下');
-                },
-                doThat () {
-                    console.log('鼠标抬起');
-                }
+                alert(str) { alert(str); },
+                onSubmit() { console.log('submit'); }
             }
         })
     </script>
 </body>
+
 </html>
