@@ -11,45 +11,61 @@
 
 <body>
     <div id="app">
-        <!-- .stop阻止事件冒泡，调用event.stop -->
-        <!-- <div @click="alert('div')" style="background-color: #f00;">
-            <button @click.stop="alert('button')">点击</button>
-        </div> -->
+        <!-- <ul>
+            <li v-for="(person, index) in persons">
+                {{ '索引:' + index }} -- {{ person }}
+                {{ index }} -- {{ person.name }} -- {{ person.age }}
+            </li>
+        </ul>
+        <ul>
+            <li v-for="(value, key, index) in shan">
+                {{ value }}
+            </li>
+        </ul> -->
 
-        <!-- .prevent 阻止默认事件，调用event.preventDefault() -->
-        <!-- <form v-on:submit.prevent="onSubmit">
-            <input type="submit">
-        </form> -->
-
-
-        <!-- .capture 事件捕获模式 -->
-        <!-- <div @click.capture="alert('div')" style="background-color: #f00;">
-            <button @click="alert('button')">点击</button>
-        </div> -->
-
-        <!-- .self 只当事件是从侦听器绑定的元素本身触发时才会触发回调 -->
-        <!-- <div @click.self="alert('div')" :style="{ backgroundColor: 'red' }">
-            <button @click="alert('button')">点击</button>
-        </div> -->
-
-        <!-- once 只触发一次回调 -->
-        <!-- <button @click.once="alert('button')">点击</button> -->
-    
-        <!-- .passive 实际上是设置的addEventLister中的passive选项，能够提升移动端的性能 -->
-        
-        <!-- 按键修饰符 -->
-        <!-- <input type="text" @keyup.enter="onSubmit"> -->
-        <!-- <input type="text" @keyup.caps-lock="onSubmit"> -->
-        <!-- <input type="text" @keyup.13="onSubmit"> 13是按键码enter -->
-        <!-- <input v-on:keyup.enter="submit"> -->
+        <!-- 可以利用of替代in作为分隔符，因为它更接近迭代器的语法 -->
+        <!-- <ul>
+            <li v-for="(person, index) of persons">
+                {{ '索引:' + index }} -- {{ person }}
+                {{ index }} -- {{ person.name }} -- {{ person.age }}
+            </li>
+        </ul>
+        <ul>
+            <li v-for="(value, key, index) of shan">
+                {{ value }}
+            </li>
+        </ul> -->
+        <ul>
+            <li v-for="(person, index) in persons">
+                {{ person }}
+                <input type="text" />
+                <button @click="handleClick(index)">下移</button>
+            </li>
+        </ul>
     </div>
 
     <script>
         const vm = new Vue({
             el: '#app',
+            data: {
+                // persons: ['Tom', 'Jerry', 'Marry', 'Jack'],
+                persons: [
+                    { name: 'Tom', age: 18 },
+                    { name: 'Jerry', age: 20 },
+                    { name: 'Marry', age: 20 },
+                    { name: 'Jack', age: 20 }
+                ],
+                shan: {
+                    name: '杉',
+                    age: 18,
+                    height: '163cm'
+                }
+            },
             methods: {
-                alert(str) { alert(str); },
-                onSubmit() { console.log('submit'); }
+                handleClick(index) {
+                    const deleteItem = this.persons.splice(index, 1);
+                    this.persons.splice(index + 1, 0, ...deleteItem);
+                }
             }
         })
     </script>
