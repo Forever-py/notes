@@ -21,7 +21,7 @@
                 v-for="(type, typeIndex) in goods.typeList"
                 :key="type"
                 :class="{active: typeIndex === goods.index}"
-                @click="handleClick(typeIndex, goods, type, goodsIndex)"
+                @click="addFilterHande(typeIndex, goods, type, goodsIndex)"
                 >{{ type }}</li>
             </ul>
         </div>
@@ -67,7 +67,7 @@
                 ]
             },
             methods: {
-                handleClick (typeIndex, goods, type, goodsIndex) {
+                addFilterHande (typeIndex, goods, type, goodsIndex) {
                     if(type === '全部') {
                         return;
                     }
