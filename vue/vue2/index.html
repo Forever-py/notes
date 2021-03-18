@@ -12,32 +12,42 @@
 
 <body>
     <div id="app">
-        <div class="goods"
-        v-for="(goods, goodsIndex) in goodsList"
-        :key="goods.id">
-            <div class="title">{{ goods.title }}:</div>
-            <ul class="type-list">
-                <li class="type"
-                v-for="(type, typeIndex) in goods.typeList"
-                :key="type"
-                :class="{active: typeIndex === goods.index}"
-                @click="addFilterHande(typeIndex, goods, type, goodsIndex)"
-                >{{ type }}</li>
+        <div class="header">
+            <div class="container">
+                <div class="logo">toDoList</div>
+                <div class="input-area">
+                    <input type="text" @input="handleInput" :value="curMask">
+                    <button @click="addMask">添加</button>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h2>
+                <span>正在进行</span>
+                <span class="mask-num">{{ needDoList.length }}</span>
+            </h2>
+            <ul class="mask-list">
+                <li v-for="(mask, index) in needDoList" :key="mask.id">
+                    <div>
+                        <input type="checkbox" @change="doCheck(index, 'need')">
+                        <span>{{ mask.title }}</span>
+                    </div>
+                    <button @click="deleteMask(index, 'need')">删除</button>
+                </li>
             </ul>
         </div>
-        <div class="choose-type">
-            <div>已选条件:</div>
-            <span class="no-goods"
-            v-if="!showFilterObj"
-            >暂时没有选择过滤条件</span>
-            <ul class="filter-list"
-            v-else>
-                <li class=""
-                v-for="(goods, goodsKey) in filterObj"
-                >{{ goods }}
-                    <span class="delete-goods"
-                    @click="deleteFilterGoods(goodsKey)"
-                    >x</span>
+        <div class="container">
+            <h2>
+                <span>已经完成</span>
+                <span class="mask-num">{{ completeList.length }}</span>
+            </h2>
+            <ul class="mask-list complete-list">
+                <li v-for="(mask, index) in completeList" :key="mask.id">
+                    <div>
+                        <input type="checkbox" @change="doCheck(index, 'complete')">
+                        <span>{{ mask.title }}</span>
+                    </div>
+                    <button @click="deleteMask(index, 'complete')">删除</button>
                 </li>
             </ul>
         </div>
@@ -46,50 +56,46 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                filterObj: {},
-                showFilterObj: false,
-                goodsList: [
-                    {
-                        title: '上装',
-                        typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
-                        id: 1,
-                    },
-                    {
-                        title: '裤装',
-                        typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
-                        id: 2,
-                    },
-                    {
-                        title: '裙装',
-                        typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
-                        id: 3,
-                    }
-                ]
+                curMask: '',
+                needDoList: [
+                    // { title: '吃饭', id: 0 },
+                    // { title: '睡觉', id: 1 },
+                    // { title: '打豆豆', id: 2 }
+                ],
+                completeList: [],
             },
             methods: {
-                addFilterHande (typeIndex, goods, type, goodsIndex) {
-                    if(type === '全部') {
+                handleInput(e) {
+                    this.curMask = e.target.value; // e.target 事件对象
+                    // console.log(this.curMask);
+                },
+                addMask() {
+                    if (this.curMask == '') {
                         return;
                     }
-                    this.showFilterObj = true;
-                    goods.index = typeIndex;
-                    vm.$set(this.filterObj, goodsIndex, type);
-                    // console.log(this.filterObj);
+                    this.needDoList.push({
+                        title: this.curMask,
+                        id: Math.random()
+                    });
+                    // console.log(this.needDoList);
+                    this.curMask = '';
                 },
-                deleteFilterGoods (goodsKey) {
-                    this.$delete(this.filterObj, goodsKey);
-                    this.goodsList[goodsKey].index = 0;
-                    this.changeShowFilter();
+                doCheck(index, type) {
+                    if (type === 'need') {
+                        const completeMask = this.needDoList.splice(index, 1);
+                        // console.log(completeMask);
+                        this.completeList.push(...completeMask);
+                    } else {
+                        const needDoMask = this.completeList.splice(index, 1);
+                        this.needDoList.push(...needDoMask);
+                    }
                 },
-                changeShowFilter () {
-                    const filterObjStr = JSON.stringify(this.filterObj);
-                    // console.log(filterObjStr);
-                    this.showFilterObj = filterObjStr !== '{}' ? true : false;
+                deleteMask (index, type) {
+                    const toDoList = type === 'need' ? this.needDoList : this.completeList;
+                    toDoList.splice(index, 1);
                 }
             }
         })
-        vm.goodsList.forEach(item => vm.$set(item, 'index', 0));
-        // console.log(vm.goodsList);
     </script>
 </body>
 
