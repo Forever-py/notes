@@ -7,67 +7,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./vue.js"></script>
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        <!-- <ul>
-            <li v-for="(person, index) in persons">
-                {{ '索引:' + index }} -- {{ person }}
-                {{ index }} -- {{ person.name }} -- {{ person.age }}
-            </li>
-        </ul>
-        <ul>
-            <li v-for="(value, key, index) in shan">
-                {{ value }}
-            </li>
-        </ul> -->
-
-        <!-- 可以利用of替代in作为分隔符，因为它更接近迭代器的语法 -->
-        <!-- <ul>
-            <li v-for="(person, index) of persons">
-                {{ '索引:' + index }} -- {{ person }}
-                {{ index }} -- {{ person.name }} -- {{ person.age }}
-            </li>
-        </ul>
-        <ul>
-            <li v-for="(value, key, index) of shan">
-                {{ value }}
-            </li>
-        </ul> -->
-        <ul>
-            <li v-for="(person, index) in persons">
-                {{ person }}
-                <input type="text" />
-                <button @click="handleClick(index)">下移</button>
-            </li>
-        </ul>
+        <div class="goods"
+        v-for="(goods, goodsIndex) in goodsList"
+        :key="goods.id">
+            <div class="title">{{ goods.title }}:</div>
+            <ul class="type-list">
+                <li class="type"
+                v-for="(type, typeIndex) in goods.typeList"
+                :key="type"
+                :class="{active: typeIndex === goods.index}"
+                @click="handleClick(typeIndex, goods, type, goodsIndex)"
+                >{{ type }}</li>
+            </ul>
+        </div>
+        <div class="choose-type">
+            <div>已选条件:</div>
+            <span class="no-goods"
+            v-if="!showFilterObj"
+            >暂时没有选择过滤条件</span>
+            <ul class="filter-list"
+            v-else>
+                <li class=""
+                v-for="(goods, goodsKey) in filterObj"
+                >{{ goods }}
+                    <span class="delete-goods"
+                    @click="deleteFilterGoods(goodsKey)"
+                    >x</span>
+                </li>
+            </ul>
+        </div>
     </div>
-
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                // persons: ['Tom', 'Jerry', 'Marry', 'Jack'],
-                persons: [
-                    { name: 'Tom', age: 18 },
-                    { name: 'Jerry', age: 20 },
-                    { name: 'Marry', age: 20 },
-                    { name: 'Jack', age: 20 }
-                ],
-                shan: {
-                    name: '杉',
-                    age: 18,
-                    height: '163cm'
-                }
+                filterObj: {},
+                showFilterObj: false,
+                goodsList: [
+                    {
+                        title: '上装',
+                        typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
+                        id: 1,
+                    },
+                    {
+                        title: '裤装',
+                        typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
+                        id: 2,
+                    },
+                    {
+                        title: '裙装',
+                        typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
+                        id: 3,
+                    }
+                ]
             },
             methods: {
-                handleClick(index) {
-                    const deleteItem = this.persons.splice(index, 1);
-                    this.persons.splice(index + 1, 0, ...deleteItem);
+                handleClick (typeIndex, goods, type, goodsIndex) {
+                    if(type === '全部') {
+                        return;
+                    }
+                    this.showFilterObj = true;
+                    goods.index = typeIndex;
+                    vm.$set(this.filterObj, goodsIndex, type);
+                    // console.log(this.filterObj);
+                },
+                deleteFilterGoods (goodsKey) {
+                    this.$delete(this.filterObj, goodsKey);
+                    this.goodsList[goodsKey].index = 0;
+                    this.changeShowFilter();
+                },
+                changeShowFilter () {
+                    const filterObjStr = JSON.stringify(this.filterObj);
+                    // console.log(filterObjStr);
+                    this.showFilterObj = filterObjStr !== '{}' ? true : false;
                 }
             }
         })
+        vm.goodsList.forEach(item => vm.$set(item, 'index', 0));
+        // console.log(vm.goodsList);
     </script>
 </body>
 
