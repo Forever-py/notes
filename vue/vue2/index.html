@@ -7,50 +7,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./vue.js"></script>
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        {{ msg.split('').reverse().join('') }}
-        <br>
-        {{ someComputed }}
-        <br>
-        {{ msgReverse }}
-        <br>
-        {{ msgMethods() }}
-        {{ desc }}
+        <div class="control">
+            <input type="text" class="search" v-model="filterText">
+            <div>
+                <span class="option" 
+                :class="{
+                    'active': optionActive[index]
+                }"
+                v-for="(option, index) in controlOptions"
+                @click="filterBySex(index, option)">{{ option }}</span>
+            </div>
+        </div>
+        <ul>
+            <li class="person" v-for="person in personList" :key="person.id">
+                <div class="avatar">
+                    <img :src="person.src" :alt="person.name">
+                </div>
+                <div class="content">
+                    <span class="name">{{ person.name}}</span>
+                    <span class="des">{{ person.des }}</span>
+                </div>
+            </li>
+        </ul>
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '你好',
-                name: 'Jerry',
-                hair: 'long'
-            },
-            computed: {
-                someComputed() {
-                    return 'xxx';
-                },
-                msgReverse() {
-                    return this.msg.split('').reverse().join('');
-                },
-                // desc () {
-                //     return `姓名：${this.name},有${this.hair}头发`;
-                // }
-                desc: {
-                    get() {
-                        console.log('计算属性被读取');
-                        return `姓名：${this.name},有${this.hair}头发`;
+                addClassFlag: false,
+                optionActive: [false, false, true],
+                sex: ['m', 'f'],
+                filterText: '',
+                controlOptions: ['Male', "Female", 'All'],
+                personArr: [
+                    {
+                        name: '王港',
+                        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg',
+                        des: '颈椎不好',
+                        sex: 'm',
+                        id: '056482'
                     },
-                    set(newVal) { // 设置
-                        console.log('计算属性被设置');
+                    {
+                        name: '刘莹',
+                        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg',
+                        des: '我是谁',
+                        sex: 'f',
+                        id: '157894'
+                    },
+                    {
+                        name: '刘秀莹',
+                        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg',
+                        des: '我长得好好看',
+                        sex: 'f',
+                        id: '2849245'
+                    },
+                    {
+                        name: '刘金雷',
+                        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg',
+                        des: '你没有见过陌生的脸',
+                        sex: 'm',
+                        id: '348515'
+                    },
+                    {
+                        name: '刘飞翔',
+                        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg',
+                        des: '瓜皮刘',
+                        sex: 'm',
+                        id: '478454'
+                    }
+                ],
+            },
+            methods: {
+                filterBySex(index, option) {
+                    if (this.optionActive[index]) {
+                        return;
+                    }
+                    for (let i = 0; i < this.optionActive.length; i++) {
+                        this.optionActive[i] = false;
+                    }
+                    this.optionActive.splice(index, 1, true);
+                    this.sex.length = 0;
+                    switch (option) {
+                        case 'Male':
+                            this.sex.push('m');
+                            break;
+                        case 'Female':
+                            this.sex.push('f');
+                            break;
+                        case 'All':
+                            this.sex.push('m','f');
+                            break;
                     }
                 }
             },
-            methods: {
-                msgMethods: function () {
-                    return this.msg.split('').reverse().join('');
+            computed: {
+                personList() {
+                    const { personArr, filterText, sex } = this;
+                    return personArr.filter(item => item.name.includes(filterText) && sex.includes(item.sex))
                 }
             }
         })
