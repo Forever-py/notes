@@ -10,87 +10,47 @@
 </head>
 
 <body>
-    <!-- v-model指令
-    可以在表单元素上创建双向数据绑定。即数据更新元素更新、元素更新数据也会更新 -->
     <div id="app">
-        <!-- input -->
-        <!-- type=text 文本框 -->
-        <!--  <input type="text" v-model="message">
-        上面方法等价于下面的写法
-        <input type="text" @input="message = $event.target.value" :value="message">
-        <p>Message为：{{ message }}</p> -->
-
-        <!-- type=checkbox 复选框 -->
-        <!-- 单选复选框
-        <input type="checkbox" id="checkbox" v-model="checked" />
-        <label for="checkbox">{{ checked }}</label> -->
-        <!-- 多选复选框
-        <input type="checkbox" id="cheng" value="成哥" v-model="checkedNames">
-        <label for="cheng">成哥</label>
-        <input type="checkbox" id="deng" value="邓哥" v-model="checkedNames">
-        <label for="deng">邓哥</label>
-        <input type="checkbox" id="tong" value="思彤哥" v-model="checkedNames">
-        <label for="tong">思彤哥</label>
-        <br>
-        <span>被选中的人有: {{ checkedNames }}</span> -->
-
-        <!-- type=radio 单选框 -->
-        <!-- <input type="radio" id="cheng" value="成哥" v-model="picked">
-        <label for="cheng">成哥</label>
-        <input type="radio" id="deng" value="邓哥" v-model="picked">
-        <label for="deng">邓哥</label>
-        <input type="radio" id="tong" value="思彤哥" v-model="picked">
-        <label for="deng">思彤哥</label>
-        <br>
-        <span>被选中的人: {{ picked }}</span> -->
-
-        <!-- textarea -->
-        <!-- <p>多行文本为：{{ message }}</p>
-        <textarea v-model="message" placeholder="添加文本"></textarea> -->
-
-        <!-- select -->
-        <!-- 单选 -->
-        <!-- <select v-model="selected">
-            <option disabled>请选择</option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
+        <input type="text" v-model.number.lazy="num1">
+        <select v-model="type">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
         </select>
-        <span>选择: {{ selected === '请选择' ? '' : selected }}</span> -->
-        <!-- 多选 -->
-        <!-- <select v-model="selectList" multiple>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-        </select>
-        <span>选择: {{ selectList }}</span> -->
-
-        <!-- 修饰符 -->
-        <!-- .lazy -->
-        <!-- <input v-model.lazy="msg" > -->
-        <!-- .number 自动将用户的输入值转为数值类型 -->
-        <!-- <input v-model.number="age" type="number"> -->
-        <!-- .trim 自动过滤用户输入的首尾空白字符 -->
-        <input v-model.trim="msg">
+        <input type="text" v-model.number.lazy="num2">
+        <button @click="handleClick">=</button>
+        <span>{{ result }}</span>
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '  是猪啊  ',
-                message: '是猪啊',
-                checked: true,
-                checkedNames: [],
-                picked: '',
-                selected: '请选择',
-                selectList: [],
-                age: '15',
+                num1: 0,
+                num2: 0,
+                type: '+',
+                result: 0,
             },
-            methods: {}
+            methods: {
+                handleClick() {
+                    const { num1, num2, type } = this;
+                    switch (type) {
+                        case '+':
+                            this.result = num1 + num2;
+                            break;
+                        case '-':
+                            this.result = num1 - num2;
+                            break;
+                        case '*':
+                            this.result = num1 * num2;
+                            break;
+                        case '/':
+                            this.result = num1 / num2;
+                            break;
+                    }
+                }
+            }
         })
-        // setTimeout(() => {
-        //     console.log(vm.msg);
-        // }, 3000)
     </script>
 </body>
 
