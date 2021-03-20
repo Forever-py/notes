@@ -6,103 +6,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
+    <script src="./jquery.js"></script>
 </head>
 
 <body>
     <div id="app">
-        {{ msg }}
-        {{ obj.jerry}}
+        <div class="logo">
+            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" title="点击一下，了解更多">
+        </div>
+        <div class="search-box">
+            <span class="search-area">
+                <input type="text" maxlength="100" v-model="inputVal" @focus="() => inputFocus = true" @blur="() => inputFocus = false">
+                <span class="icon icon-paizhao"></span>
+            </span>
+            <span class="search-btn">百度一下</span>
+        </div>
+        <ul class="search-list" v-show="inputFocus && searchResList">
+            <li v-for="res in searchResList" :key="res">{{ res }}</li>
+        </ul>
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '你好呀',
-                obj: {
-                    jerry: {
-                        age: 18,
-                        sex: 'female'
-                    }
-                }
-            },
-            watch: { // 侦听器
-                // key: value,
-
-                //  值类型
-                // 1、函数类型
-                // msg (newVal, oldVal) {
-                //     console.log(newVal, oldVal);
-                // }
-
-                // 2、字符串类型
-                // msg: 'msgChange',
-
-                // 3、对象类型
-                // msg: {
-                //     handler() {
-                //         console.log('msg的值改变啦');
-                //     },
-                //     deep: true, // 开启深度侦听
-                // }
-
-                // obj: {
-                //     handler() {
-                //         console.log('obj的值改变啦');
-                //     },
-                //     deep: true, // 开启深度侦听
-                //     immediate: true,
-                // }
-
-                // 4、数组类型
-                // msg: [
-                //     'msgChange',
-                //     function () {},
-                //     {
-                //         handler() { },
-                //         deep: true,
-                //         immediate: true
-                //     }
-                // ]
-
-                //键类型
-                // 1、正常的key值
-                // msg: 'msgChange',
-
-                // 2、字符串 
-                // 'obj.jerry.age'() { // 监听对象中的某个属性
-                //     console.log('obj的值改变啦');
-                // }
+                inputFocus: false,
+                inputVal: '',
+                searchResList: [],
             },
             methods: {
-                msgChange() {
-                    console.log('msg发生了改变');
-                },
+                searchRes (res) {
+                    console.log(res.s);
+                        this.searchResList = res.s;
+                }
+            },
+            watch: {
+                inputVal () {
+                    $.ajax({
+                        dataType: 'jsonp',
+                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+                        data: {
+                            wd: this.inputVal,
+                            cb: 'vm.searchRes',
+                        }
+                    });
+                }
             }
         })
-
-        // vm.$watch()，有三参、和两参两种写法
-        
-        // vm.$watch('监听的数据', '数据改变时执行的回调函数', '可选项deep/immediate')
-        // vm.$watch('msg', function () {
-        //     console.log('msg的值发生了变化');
-        // }, {
-        //     deep: true,
-        //     immediate: true
-        // })
-
-        // vm.$watch('监听的数据','选项对象，其中必须包含handler')
-        // vm.$watch('msg', {
-        //     handler() {
-        //         console.log('msg的值发生了变化');
-        //     },
-        //     deep: true,
-        //     immediate: true
-        // })
-
-
-        vm.msg = '你真好';
-        // vm.obj.jerry.age = 19;
     </script>
 </body>
 
