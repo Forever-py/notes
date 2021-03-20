@@ -8,49 +8,83 @@
     <title>Document</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
-    <script src="./jquery.js"></script>
+    <script src="./vue-resource.js"></script>
 </head>
 
 <body>
     <div id="app">
-        <div class="logo">
-            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" title="点击一下，了解更多">
+        <div class="username">
+            <input type="text" placeholder="用户名" v-model="name">
         </div>
-        <div class="search-box">
-            <span class="search-area">
-                <input type="text" maxlength="100" v-model="inputVal" @focus="() => inputFocus = true" @blur="() => inputFocus = false">
-                <span class="icon icon-paizhao"></span>
-            </span>
-            <span class="search-btn">百度一下</span>
+        <div class="mail">
+            <input type="text" placeholder="邮箱" v-model="mail">
         </div>
-        <ul class="search-list" v-show="inputFocus && searchResList">
-            <li v-for="res in searchResList" :key="res">{{ res }}</li>
+        <div class="upload-btn" @click="handleUpload()">上传</div>
+        <div class="test-btn" @click="handleTest()">测试jsonp</div>
+        <div class="show-btn" @click="handleShow()">显示人物信息</div>
+        <ul class="person-list" v-if="personList.length">
+            <li class="person" v-for="person in personList">
+                <span>{{ person.name }}</span>
+                <span>{{ person.mail }}</span>
+            </li>
         </ul>
     </div>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                inputFocus: false,
-                inputVal: '',
-                searchResList: [],
+                name: '',
+                mail: '',
+                msg: '',
+                personList: []
             },
             methods: {
-                searchRes (res) {
-                    console.log(res.s);
-                        this.searchResList = res.s;
+                handleUpload() {
+                    this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
+                        name: this.name,
+                        mail: this.mail
+                    }).then(res => {
+                        this.msg = res.body.msg;
+                    }).catch(error => {
+                        this.msg = error.body.msg;
+                    })
+                },
+                handleShow() {
+                    this.$http.get('https://developer.duyiedu.com/vue/getUserInfo')
+                        .then(res => {
+                            this.personList = res.body.data.splice(0, 10);
+                            console.log(this.personList);
+                        }).catch(error => {
+                            console.log(error);
+                        })
+                },
+                handleTest() {
+                    // this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp', {
+                    //     jsonp: 'callback',
+                    // }).then(res => {
+                    //     console.log(res);
+                    // }).catch(error => {
+                    //     console.log(error);
+                    // })
+                    this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
+                        params: {
+                            wd: '好看',
+                        },
+                        jsonp: 'cb', //jsonp默认是callback,百度缩写成了cb，所以需要指定下 
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(error => {
+                        console.log(error);
+                    })
                 }
             },
             watch: {
-                inputVal () {
-                    $.ajax({
-                        dataType: 'jsonp',
-                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
-                        data: {
-                            wd: this.inputVal,
-                            cb: 'vm.searchRes',
-                        }
-                    });
+                msg() {
+                    if (this.msg === '') {
+                        return;
+                    }
+                    alert(this.msg);
+                    this.msg = '';
                 }
             }
         })
