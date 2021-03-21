@@ -2623,7 +2623,7 @@ instance.interceptors.request.use(config => {});
 ## 取消请求
 用于取消正在进行的http请求
 ```js
-const source = axios.CancelToken;
+const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 
 axios.get('/getUserInfo', {

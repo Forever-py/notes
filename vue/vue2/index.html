@@ -22,6 +22,7 @@
         </div>
         <div class="upload-btn" @click="handleUpload">上传</div>
         <div class="show-btn" @click="handleShow">显示人物信息</div>
+        <button @click="handleCancelGet">取消请求</button>
         <ul class="person-list" v-if="personList.length">
             <li class="person" v-for="person in personList">
                 <span>{{ person.name }}</span>
@@ -33,15 +34,30 @@
     <script>
         // axios 的三种配置方法与使用
         // 全局配置
-        // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
-        
+        axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
+
         // 实例配置
         // const instance = axios.create({
         //     baseURL: 'https://developer.duyiedu.com/vue',
         // })
-        
+
         // 请求配置
-        const instance = axios.create();
+        // const instance = axios.create();
+
+        // 拦截器
+        // 请求拦截器
+        axios.interceptors.request.use(config => {
+            // console.log(config);
+            return config;
+        })
+        // 响应拦截器
+        axios.interceptors.response.use(response => {
+            // console.log(response);
+            return response;
+        })
+
+        // 取消请求
+        const source = axios.CancelToken.source();
         const vm = new Vue({
             el: '#app',
             data: {
@@ -85,12 +101,31 @@
                     // })
 
                     // 请求配置的使用
-                    instance.get('/getUserInfo', {
-                        baseURL: 'https://developer.duyiedu.com/vue',
+                    // instance.get('/getUserInfo', {
+                    //     baseURL: 'https://developer.duyiedu.com/vue',
+                    // }).then(res => {
+                    //     this.msg = res.data.msg;
+                    //     this.personList = res.data.data.splice(0, 5);
+                    // })
+
+                    // 取消请求配置
+                    axios.get('/getUserInfo', {
+                        cancelToken: source.token
                     }).then(res => {
-                        this.msg = res.data.msg;
-                        this.personList = res.data.data.splice(0, 5);
+                        console.log(res.data.data.splice(0, 5));
+                    }).catch(error => {
+                        // 错误可能是请求错误，也可能是响应错误
+                        if (error.response) { // 响应错误
+                            console.log("响应错误");
+                        } else if (error.request) { // 请求错误
+                            console.log("请求错误");
+                        } else {
+                            console.log('Error', error.message);
+                        }
                     })
+                },
+                handleCancelGet() {
+                    source.cancel('取消请求');
                 }
             },
             watch: {
