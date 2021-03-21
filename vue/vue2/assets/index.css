@@ -1,0 +1,146 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    background-color: #fff;
+    padding-bottom: 15px;
+    z-index: 3;
+}
+
+.header .logo {
+    margin-left: 18px;
+}
+
+.header .search-input {
+    width: 132px;
+    height: 24px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #999;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+}
+
+.header .search-input span {
+    width: 92px;
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 溢出隐藏 */
+    text-overflow: ellipsis; /* 文字超出打点 */
+}
+
+.header .search-input svg {
+    margin-left: 10px;
+}
+
+.header .avator svg {
+    border-radius: 50%;
+}
+
+.header .download-app {
+    -webkit-user-drag: 78px;
+    height: 23px;
+    padding: 0 10px;
+    margin-right: 12px;
+    border-radius: 4px;
+    line-height: 23px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    background-color: #fb7299;
+}
+
+/* 导航区域 */
+.nav-box {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.nav-box .nav-list {
+    white-space: nowrap;
+    width: 85%;
+    padding-left: 24px;
+    overflow-x: scroll;
+}
+
+.nav-box .nav-list::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-box .nav {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 40px;
+    color: #757575;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-box .nav.active {
+    border-color: #fb7299;
+
+}
+
+.nav-box .down {
+    position: absolute;
+    top: -3px;
+    right: 13px;
+}
+
+.hide-nav-box {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+    padding-bottom: 20px;
+    background-color: #fff;
+    z-index: 2;
+    transition: top 0.3s;
+}
+
+.hide-nav-box.hide {
+    /* display: none; */
+    top: -117px;
+}
+
+.hide-nav-box .nav-list {
+
+}
+
+.hide-nav-box .nav {
+    display: inline-block;
+    width: 32px;
+    text-align: center;
+    padding: 6px 0;
+    margin: 0 14px 10px 14px;
+    font-size: 14px;
+    color: #757575;
+    border-bottom: 2px solid transparent;
+}
+
+.hide-nav-box .nav.active {
+    border-color: #fb7299;
+    color: #fb7299;
+}
+
+.hide-nav-box .nav.big {
+    width: 48px;
+    margin: 0 6px;
+}
+
+.hide-nav-box .up {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
