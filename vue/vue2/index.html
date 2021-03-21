@@ -11,14 +11,67 @@
 
 <body>
     <div id="app">
-        sad
+        <div @click="handleClick">{{ msg }}</div>
     </div>
 
     <script>
         const vm = new Vue({
             el: '#app',
-            data: {},
-            template: `<div id="ceshi">xxx</div>`,
+            data: {
+                msg: '你好',
+            },
+            beforeCreate() { // 在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
+                console.log(this.msg);   // undefined
+                console.log(this.handleClick);  // undefined
+                console.log('beforeCreate');
+                this.timer= setInterval(() => {
+                    console.log(1);
+                }, 1000);
+            },
+            created() {
+                console.log(this.msg);  // 你好
+                console.log(this.handleClick);  // function () {...}
+                console.log(this.$el);  // undefined
+                console.log('-------created-------');
+            },
+            beforeMount() {
+                console.log(this.$el);
+                console.log('-------beforeMount-------');
+            },
+            mounted() {
+                console.log(this.$el);
+                console.log('-------mounted-------');
+            },
+            beforeUpdate() {
+                console.log(this.msg);
+                console.log(this.$el.outerHTML);
+                console.log('-------beforeUpdate-------');
+            },
+            updated() {
+                console.log(this.msg);
+                console.log(this.$el.outerHTML);
+                console.log('-------updated-------');
+            },
+            beforeDestroy() {
+                clearInterval(this.timer);
+                console.log('-------beforeDestroy-------');
+            },
+            destroyed() {
+                console.log('-------destroy-------');
+            },
+            methods: {
+                handleClick() {
+                    console.log(handleClick);
+                }
+            },
+            watch: {
+                msg: {
+                    handler() {
+                        console.log('侦听msg的值');
+                    },
+                    immediate: true,
+                }
+            }
         })
     </script>
 </body>
