@@ -6,137 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
-    <script src="./axios.min.js"></script>
 </head>
 
 <body>
-
     <div id="app">
-        <div class="username">
-            <input type="text" placeholder="用户名" v-model="name">
-        </div>
-        <div class="mail">
-            <input type="text" placeholder="邮箱" v-model="mail">
-        </div>
-        <div class="upload-btn" @click="handleUpload">上传</div>
-        <div class="show-btn" @click="handleShow">显示人物信息</div>
-        <button @click="handleCancelGet">取消请求</button>
-        <ul class="person-list" v-if="personList.length">
-            <li class="person" v-for="person in personList">
-                <span>{{ person.name }}</span>
-                <span>{{ person.mail }}</span>
-            </li>
-        </ul>
+        sad
     </div>
 
     <script>
-        // axios 的三种配置方法与使用
-        // 全局配置
-        axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
-
-        // 实例配置
-        // const instance = axios.create({
-        //     baseURL: 'https://developer.duyiedu.com/vue',
-        // })
-
-        // 请求配置
-        // const instance = axios.create();
-
-        // 拦截器
-        // 请求拦截器
-        axios.interceptors.request.use(config => {
-            // console.log(config);
-            return config;
-        })
-        // 响应拦截器
-        axios.interceptors.response.use(response => {
-            // console.log(response);
-            return response;
-        })
-
-        // 取消请求
-        const source = axios.CancelToken.source();
         const vm = new Vue({
             el: '#app',
-            data: {
-                name: '',
-                mail: '',
-                msg: '',
-                personList: []
-            },
-            methods: {
-                handleUpload() {
-                    axios.post('https://developer.duyiedu.com/vue/setUserInfo', {
-                        name: this.name,
-                        mail: this.mail,
-                    }).then(res => {
-                        this.msg = res.data.msg;
-                    })
-                },
-                handleShow() {
-                    // axios({
-                    //     method: 'get',
-                    //     baseURL: 'https://developer.duyiedu.com/vue',
-                    //     url: '/getUserInfo',
-                    // }).then(res => {
-                    //     this.msg = res.data.msg;
-                    //     this.personList = res.data.data.splice(0, 5);
-                    // })
-
-                    // 全局配置的使用 
-                    // axios({
-                    //     method: 'get',
-                    //     url: '/getUserInfo',
-                    // }).then(res => {
-                    //     this.msg = res.data.msg;
-                    //     this.personList = res.data.data.splice(0, 5);
-                    // })
-
-                    // 实例配置的使用
-                    // instance.get('/getUserInfo').then(res => {
-                    //     this.msg = res.data.msg;
-                    //     this.personList = res.data.data.splice(0, 5);
-                    // })
-
-                    // 请求配置的使用
-                    // instance.get('/getUserInfo', {
-                    //     baseURL: 'https://developer.duyiedu.com/vue',
-                    // }).then(res => {
-                    //     this.msg = res.data.msg;
-                    //     this.personList = res.data.data.splice(0, 5);
-                    // })
-
-                    // 取消请求配置
-                    axios.get('/getUserInfo', {
-                        cancelToken: source.token
-                    }).then(res => {
-                        console.log(res.data.data.splice(0, 5));
-                    }).catch(error => {
-                        // 错误可能是请求错误，也可能是响应错误
-                        if (error.response) { // 响应错误
-                            console.log("响应错误");
-                        } else if (error.request) { // 请求错误
-                            console.log("请求错误");
-                        } else {
-                            console.log('Error', error.message);
-                        }
-                    })
-                },
-                handleCancelGet() {
-                    source.cancel('取消请求');
-                }
-            },
-            watch: {
-                msg() {
-                    if (this.msg === '') {
-                        return;
-                    }
-                    alert(this.msg);
-                    this.msg = '';
-                }
-            }
+            data: {},
+            template: `<div id="ceshi">xxx</div>`,
         })
     </script>
 </body>
