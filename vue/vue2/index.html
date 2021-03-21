@@ -3,15 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
-    <script src="./vue-resource.js"></script>
+    <script src="./axios.min.js"></script>
 </head>
 
 <body>
+
     <div id="app">
         <div class="username">
             <input type="text" placeholder="用户名" v-model="name">
@@ -19,9 +20,8 @@
         <div class="mail">
             <input type="text" placeholder="邮箱" v-model="mail">
         </div>
-        <div class="upload-btn" @click="handleUpload()">上传</div>
-        <div class="test-btn" @click="handleTest()">测试jsonp</div>
-        <div class="show-btn" @click="handleShow()">显示人物信息</div>
+        <div class="upload-btn" @click="handleUpload">上传</div>
+        <div class="show-btn" @click="handleShow">显示人物信息</div>
         <ul class="person-list" v-if="personList.length">
             <li class="person" v-for="person in personList">
                 <span>{{ person.name }}</span>
@@ -29,7 +29,19 @@
             </li>
         </ul>
     </div>
+
     <script>
+        // axios 的三种配置方法与使用
+        // 全局配置
+        // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
+        
+        // 实例配置
+        // const instance = axios.create({
+        //     baseURL: 'https://developer.duyiedu.com/vue',
+        // })
+        
+        // 请求配置
+        const instance = axios.create();
         const vm = new Vue({
             el: '#app',
             data: {
@@ -40,41 +52,44 @@
             },
             methods: {
                 handleUpload() {
-                    this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
+                    axios.post('https://developer.duyiedu.com/vue/setUserInfo', {
                         name: this.name,
-                        mail: this.mail
+                        mail: this.mail,
                     }).then(res => {
-                        this.msg = res.body.msg;
-                    }).catch(error => {
-                        this.msg = error.body.msg;
+                        this.msg = res.data.msg;
                     })
                 },
                 handleShow() {
-                    this.$http.get('https://developer.duyiedu.com/vue/getUserInfo')
-                        .then(res => {
-                            this.personList = res.body.data.splice(0, 10);
-                            console.log(this.personList);
-                        }).catch(error => {
-                            console.log(error);
-                        })
-                },
-                handleTest() {
-                    // this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp', {
-                    //     jsonp: 'callback',
+                    // axios({
+                    //     method: 'get',
+                    //     baseURL: 'https://developer.duyiedu.com/vue',
+                    //     url: '/getUserInfo',
                     // }).then(res => {
-                    //     console.log(res);
-                    // }).catch(error => {
-                    //     console.log(error);
+                    //     this.msg = res.data.msg;
+                    //     this.personList = res.data.data.splice(0, 5);
                     // })
-                    this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
-                        params: {
-                            wd: '好看',
-                        },
-                        jsonp: 'cb', //jsonp默认是callback,百度缩写成了cb，所以需要指定下 
+
+                    // 全局配置的使用 
+                    // axios({
+                    //     method: 'get',
+                    //     url: '/getUserInfo',
+                    // }).then(res => {
+                    //     this.msg = res.data.msg;
+                    //     this.personList = res.data.data.splice(0, 5);
+                    // })
+
+                    // 实例配置的使用
+                    // instance.get('/getUserInfo').then(res => {
+                    //     this.msg = res.data.msg;
+                    //     this.personList = res.data.data.splice(0, 5);
+                    // })
+
+                    // 请求配置的使用
+                    instance.get('/getUserInfo', {
+                        baseURL: 'https://developer.duyiedu.com/vue',
                     }).then(res => {
-                        console.log(res);
-                    }).catch(error => {
-                        console.log(error);
+                        this.msg = res.data.msg;
+                        this.personList = res.data.data.splice(0, 5);
                     })
                 }
             },
