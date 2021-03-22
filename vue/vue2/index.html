@@ -100,8 +100,9 @@
         <div :class="{'nav-box': navIndex === 1, 'hide-nav-box': navIndex === 2, 'hide': navIndex===2 && navHide}"
             v-for="navIndex in 2">
             <ul class="nav-list">
-                <li class="nav" :class="{big: nav.title.length === 3 && navIndex === 2, active: index === navActiveIndex}" v-for="(nav, index) in navList"
-                    :key="nav.id" @click="handleNavClick(index)">{{ nav.title }}</li>
+                <li class="nav"
+                    :class="{big: nav.title.length === 3 && navIndex === 2, active: index === navActiveIndex}"
+                    v-for="(nav, index) in navList" :key="nav.id" @click="handleNavClick(index)">{{ nav.title }}</li>
             </ul>
             <div class="down" v-if="navIndex===1" @click="handleClick">
                 <svg width="16" height="32" viewBox="0 0 1024 1024">
@@ -118,6 +119,18 @@
                 </svg>
             </div>
         </div>
+
+        <!-- 轮播图区域 -->
+        <div class="banner-box">
+            <ul class="banner-list" :style="bannerStyle" @transitionend="handleTransitionEnd">
+                <li class="banner" v-for="banner in bannerList" :key="banner.id">
+                    <img class="poster" :src="banner.poster" :alt="banner.title">
+                </li>
+            </ul>
+            <ul class="inner-list">
+                <li v-for="index in bannerList.length - 1" :class="{active: index - 1 === bannerActiveIndex % 3}" class="index" :key="index"></li>
+            </ul>
+        </div>
     </div>
     <script>
         axios.defaults.baseURL = 'https://developer.duyiedu.com/vue/bz';
@@ -127,13 +140,39 @@
                 navList: [],
                 navHide: true,
                 navActiveIndex: 0,
+                bannerList: [],
+                bannerWidth: 350,
+                bannerStyle: {
+                    left: 0,
+                    transition: 'left .3s',
+                },
+                bannerActiveIndex: 0,
+                lastEle: [],
             },
             methods: {
                 handleClick() {
                     this.navHide = !this.navHide;
                 },
-                handleNavClick (index) {
+                handleNavClick(index) {
                     this.navActiveIndex = index;
+                },
+                autoMove() {
+                    setTimeout(() => {
+                        if (this.bannerActiveIndex === 0) {
+                            this.bannerStyle.transition = 'left .3s';
+                        }
+                        this.bannerActiveIndex++;
+                        this.bannerStyle.left = -(this.bannerWidth * this.bannerActiveIndex) + 'px';
+
+                    }, 1500);
+                },
+                handleTransitionEnd() {
+                    if (this.bannerActiveIndex === 3) {
+                        this.bannerActiveIndex = 0;
+                        this.bannerStyle.left = 0;
+                        this.bannerStyle.transition = 'none';
+                    }
+                    this.autoMove();
                 }
             },
             created() {
@@ -143,8 +182,18 @@
                     }
                     console.log(this.navList);
                 })
+                axios.get('/banner').then(res => {
+                    if (res.status === 200) {
+                        this.lastEle = {...res.data.data[0]},
+                        this.lastEle.id = Math.ceil(Math.random() * 10000000);
+                        this.bannerList = [...res.data.data, this.lastEle];
+                    }
+                    console.log(this.bannerList)
+                })
             },
-
+            mounted() {
+                this.autoMove();
+            }
         })
     </script>
 </body>
